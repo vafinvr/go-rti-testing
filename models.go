@@ -1,8 +1,11 @@
 package main
 
 const (
-	PriceTypeCost     = "COST"
-	PriceTypeDiscount = "Discount"
+	PriceTypeCost              = "COST"
+	PriceTypeDiscount          = "Discount"
+	OperatorEqual              = "EQ"
+	OperatorGreaterThanOrEqual = "GTE"
+	OperatorLessThanOrEqual    = "LTE"
 )
 
 type RuleApplicability struct {
@@ -13,13 +16,14 @@ type RuleApplicability struct {
 
 type Price struct {
 	Cost                float64             `json:"cost"`
-	PriceType           string              `json:"priceType"`
-	RuleApplicabilities []RuleApplicability `json:"ruleApplicabilities"`
+	PriceType           string              `json:"priceType,omitempty"`
+	RuleApplicabilities []RuleApplicability `json:"ruleApplicabilities,omitempty"`
 }
 
 type Component struct {
-	Name   string `json:"name"`
-	IsMain bool   `json:"isMain"`
+	Name   string  `json:"name"`
+	IsMain bool    `json:"isMain,omitempty"`
+	Prices []Price `json:"prices"`
 }
 
 type Product struct {
@@ -35,8 +39,4 @@ type Condition struct {
 type Offer struct {
 	Product
 	TotalCost Price `json:"totalCost"`
-}
-
-func (p *Price) GetCostInt64() int64 {
-	return int64(p.Cost)
 }
